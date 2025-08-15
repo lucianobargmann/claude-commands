@@ -18,13 +18,35 @@ affected_modules: Suspected files or directories
 
 **Agentic Loop:**
 1. Parse arguments and understand defect scope.
-2. Reproduce bug locally
+2. Reproduce bug locally.
 3. Identify and inspect affected modules + dependencies.
-4. Create a regression test to capture the defect.
-   - Ensure test FAILS before the fix.
-5. Implement the fix:
+4. **TDD Red Phase - Create failing regression test:**
+   - Write a test that reproduces the defect.
+   - Ensure test FAILS with current code (red).
+   - Add additional test cases for edge conditions.
+5. **TDD Green Phase - Implement minimal fix:**
+   - Write the minimal code needed to fix the defect.
+   - Focus only on making the regression test pass.
    - Ensure syntax and types are valid after every change.
-6. Run the regression test until it passes.
-7. Run the full test suite to ensure no regressions elsewhere.
-8. Run SonarQube analysis to ensure no quality violations.
-9. Commit the fix with a message and the regression test.
+   - Run the regression test until it passes (green).
+6. **TDD Refactor Phase - Improve fix quality:**
+   - Refactor the fix while keeping tests green.
+   - Optimize without changing behavior.
+   - Ensure code is clean and maintainable.
+7. **Lint and Auto-fix:**
+   - Run linter for affected files.
+   - Automatically fix all fixable issues.
+   - Manually resolve any remaining lint errors.
+   - Verify code passes all style checks.
+8. **Create/Update E2E Tests:**
+   - Write or update E2E tests covering the fix.
+   - Test the specific user workflow that was broken.
+   - Include tests for related edge cases.
+   - Ensure E2E tests fail without fix and pass with fix.
+9. **Execute E2E Test Suite:**
+   - Run the complete E2E test suite.
+   - Verify no E2E tests are broken by the fix.
+   - Re-run until all E2E tests pass.
+10. Run the full test suite to ensure no regressions elsewhere.
+11. Run code quality analysis (e.g., SonarQube).
+12. Commit the fix with a message, regression test, and E2E tests.
